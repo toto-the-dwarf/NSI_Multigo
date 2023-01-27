@@ -19,3 +19,5 @@ COULEURS = {
     1: (0, 0, 0), #Noir
     2: (255, 255, 255) #Blanc
 }
+
+#ertfghyuji
