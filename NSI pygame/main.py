@@ -11,16 +11,15 @@ def main():
     pygame.init()
     SCREEN = pygame.display.set_mode((L, L))
     pygame.display.set_caption("MultiGo")
-    CLOCK = pygame.time.Clock()
-    turn = 1
+    Turn = 1
     while True:
         SCREEN.fill(BEIGE)
         drawGrid()
         update(map_pierres)
-        HOVER = hover()
-        if HOVER != False and map_pierres[int(HOVER[1]/ECART-1)][int(HOVER[0]/ECART-1)] == 0:
-            circle = pygame.draw.circle(SCREEN, COULEURS[turn], HOVER, SIZE)
-            turn = click(map_pierres, HOVER, turn)
+        Hover = hover()
+        if Hover != False and map_pierres[int(Hover[1]/ECART-1)][int(Hover[0]/ECART-1)] == 0:
+            circle = pygame.draw.circle(SCREEN, COULEURS[Turn], Hover, SIZE)
+            Turn = click(map_pierres, Hover, Turn)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
