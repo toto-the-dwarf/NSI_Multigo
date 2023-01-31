@@ -17,11 +17,19 @@ class pierre:
                     if i.coord == (self.coord[0]+x, self.coord[1]+y):
                         lst_voisins.append(i)
         return lst_voisins
+    
+    def assign_gr(self, Map):
+        lst_voisins = self.check(Map)
+        col_voisins = [i.col_id for i in lst_voisins]
+        gr_voisins = [i.gr_id for i in lst_voisins]
+        if len(lst_voisins) == 0 or col_voisins.count(self.col_id) == 0:
+            self.gr_id = COULEURS[self.col_id].create_gr()
+
 
 class group:
-    def __init__(self, gr_id) -> None:
-        self.gr_id = gr_id
+    def __init__(self) -> None:
         self.pierres_id = []
+
     def add_pierre(self, pierre_id):
         self.pierres_id.append(pierre_id)
 
@@ -29,6 +37,11 @@ class couleur:
     def __init__(self, col_id, rgb) -> None:
         self.col_id = col_id
         self.rgb = rgb
+        self.lst_gr = []
+    
+    def create_gr(self):
+        self.lst_gr.append(group())
+        return len(self.lst_gr)
 
 COULEURS = [couleur(i, RGB[i]) for i in range(len(RGB))]
 lst_pierres = []
