@@ -42,8 +42,6 @@ def main():
         drawGrid()
         update(map_pierres)
         Hover = hover()
-        if len(lst_pierres) > 0:
-            print(lst_pierres[0].check(map_pierres))
         if Hover != False and map_pierres[int(Hover[1]/ECART-1)][int(Hover[0]/ECART-1)] == -1:
             circle = pygame.draw.circle(SCREEN, COULEURS[Turn].rgb, Hover, SIZE)
             Turn = click(map_pierres, Hover, Turn)
