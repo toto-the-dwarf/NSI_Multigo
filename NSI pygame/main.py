@@ -5,8 +5,18 @@ from config import *
 
 
 class pierre:
-    def __init__(self, x, y) -> None:
+    def __init__(self, x, y, col_id) -> None:
         self.coord = (x, y)
+        self.col_id = col_id
+    
+    def check(self, Map):
+        lst_voisins = []
+        for (x, y) in [(-1, 0), (1, 0), (0, -1), (0,1)]:
+            if Map[self.coord[0]+x][self.coord[1]+y] != -1:
+                for i in lst_pierres:
+                    if i.coord == (self.coord[0]+x, self.coord[1]+y):
+                        lst_voisins.append(i)
+        return lst_voisins
 
 class couleur:
     def __init__(self, col_id, rgb) -> None:
@@ -14,6 +24,7 @@ class couleur:
         self.rgb = rgb
 
 COULEURS = [couleur(i, RGB[i]) for i in range(len(RGB))]
+lst_pierres = []
 
 
 
@@ -82,6 +93,7 @@ def click(Map: list, pos: tuple, Turn: int) -> int:
     """
     if pygame.mouse.get_pressed()[0]:
         Map[int(pos[1]/ECART-1)][int(pos[0]/ECART-1)] = Turn
+        lst_pierres.append(pierre(int(pos[1]/ECART-1), int(pos[0]/ECART-1), Turn))
         if Turn == 1:
             return 0
         else:
