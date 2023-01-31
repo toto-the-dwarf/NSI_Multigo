@@ -3,6 +3,20 @@ from pygame.locals import *
 from config import *
 
 
+
+class pierre:
+    def __init__(self, x, y) -> None:
+        self.coord = (x, y)
+
+class couleur:
+    def __init__(self, col_id, rgb) -> None:
+        self.col_id = col_id
+        self.rgb = rgb
+
+COULEURS = [couleur(i, RGB[i]) for i in range(len(RGB))]
+
+
+
 def main():
     """
         Boucle principale
@@ -11,14 +25,14 @@ def main():
     pygame.init()
     SCREEN = pygame.display.set_mode((L, L))
     pygame.display.set_caption("MultiGo")
-    Turn = 1
+    Turn = 0
     while True:
         SCREEN.fill(BEIGE)
         drawGrid()
         update(map_pierres)
         Hover = hover()
-        if Hover != False and map_pierres[int(Hover[1]/ECART-1)][int(Hover[0]/ECART-1)] == 0:
-            circle = pygame.draw.circle(SCREEN, COULEURS[Turn], Hover, SIZE)
+        if Hover != False and map_pierres[int(Hover[1]/ECART-1)][int(Hover[0]/ECART-1)] == -1:
+            circle = pygame.draw.circle(SCREEN, COULEURS[Turn].rgb, Hover, SIZE)
             Turn = click(map_pierres, Hover, Turn)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -54,8 +68,8 @@ def update(Map: list):
     """
     for ligne in range(len(Map)):
         for colonne in range(len(Map[0])):
-            if Map[ligne][colonne] != 0:
-                circle = pygame.draw.circle(SCREEN, COULEURS[Map[ligne][colonne]], (ECART*(colonne+1), ECART*(ligne+1)), SIZE)
+            if Map[ligne][colonne] != -1:
+                circle = pygame.draw.circle(SCREEN, COULEURS[Map[ligne][colonne]].rgb, (ECART*(colonne+1), ECART*(ligne+1)), SIZE)
 
 def click(Map: list, pos: tuple, Turn: int) -> int:
     """
@@ -67,12 +81,13 @@ def click(Map: list, pos: tuple, Turn: int) -> int:
     """
     if pygame.mouse.get_pressed()[0]:
         Map[int(pos[1]/ECART-1)][int(pos[0]/ECART-1)] = Turn
-        if Turn == 2:
-            return 1
+        if Turn == 1:
+            return 0
         else:
             return Turn + 1
     else:
         return Turn
+
 
 
 main()
