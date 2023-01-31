@@ -18,6 +18,13 @@ class pierre:
                         lst_voisins.append(i)
         return lst_voisins
 
+class group:
+    def __init__(self, gr_id) -> None:
+        self.gr_id = gr_id
+        self.pierres_id = []
+    def add_pierre(self, pierre_id):
+        self.pierres_id.append(pierre_id)
+
 class couleur:
     def __init__(self, col_id, rgb) -> None:
         self.col_id = col_id
