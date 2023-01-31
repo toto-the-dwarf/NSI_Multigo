@@ -47,7 +47,7 @@ def drawGrid():
         for y in range(ECART, L-ECART, ECART):
             rect = pygame.Rect(x, y, ECART, ECART)
             pygame.draw.rect(SCREEN, (0, 0, 0), rect, 1)
-    pygame.draw.rect(SCREEN, (0, 0, 0), (ECART, ECART, L-(2*Ecart), L-(2*Ecart)), 1)
+    pygame.draw.rect(SCREEN, (0, 0, 0), (ECART, ECART, L-(2*ECART), L-(2*ECART)), 2)
 
 def hover() -> bool or tuple:
     """
