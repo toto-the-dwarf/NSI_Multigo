@@ -5,7 +5,8 @@ from config import *
 
 
 class pierre:
-    def __init__(self, x, y, col_id) -> None:
+    def __init__(self, pierre_id, x, y, col_id) -> None:
+        self.pierre_id = pierre_id
         self.coord = (x, y)
         self.col_id = col_id
     
@@ -21,13 +22,22 @@ class pierre:
     def assign_gr(self, Map):
         lst_voisins = self.check(Map)
         col_voisins = [i.col_id for i in lst_voisins]
-        gr_voisins = [i.gr_id for i in lst_voisins]
+        gr_voisins = [i.gr_id for i in lst_voisins if i.col_id == self.col_id]
         if len(lst_voisins) == 0 or col_voisins.count(self.col_id) == 0:
             self.gr_id = COULEURS[self.col_id].create_gr()
+            COULEURS[self.col_id].lst_gr[self.gr_id].add_pierre(self.pierre_id)
+        elif gr_voisins.count(gr_voisins[0]) == len(gr_voisins):
+            self.gr_id = gr_voisins[0]
+            COULEURS[self.col_id].lst_gr[self.gr_id].add_pierre(self.pierre_id)
+        else:
+            pass
+            #faut rajouter une methode pour merge deux groupes :derp:
+            #j'ai envie de me suicider :derp:
 
 
 class group:
-    def __init__(self) -> None:
+    def __init__(self, gr_id) -> None:
+        self.gr_id = gr_id
         self.pierres_id = []
 
     def add_pierre(self, pierre_id):
@@ -40,8 +50,8 @@ class couleur:
         self.lst_gr = []
     
     def create_gr(self):
-        self.lst_gr.append(group())
-        return len(self.lst_gr)
+        self.lst_gr.append(group(len(self.lst_gr)))
+        return len(self.lst_gr)-1
 
 COULEURS = [couleur(i, RGB[i]) for i in range(len(RGB))]
 lst_pierres = []
@@ -62,6 +72,8 @@ def main():
         drawGrid()
         update(map_pierres)
         Hover = hover()
+        for i in COULEURS:
+            print(i.lst_gr)
         if Hover != False and map_pierres[int(Hover[1]/ECART-1)][int(Hover[0]/ECART-1)] == -1:
             circle = pygame.draw.circle(SCREEN, COULEURS[Turn].rgb, Hover, SIZE)
             Turn = click(map_pierres, Hover, Turn)
@@ -113,7 +125,8 @@ def click(Map: list, pos: tuple, Turn: int) -> int:
     """
     if pygame.mouse.get_pressed()[0]:
         Map[int(pos[1]/ECART-1)][int(pos[0]/ECART-1)] = Turn
-        lst_pierres.append(pierre(int(pos[1]/ECART-1), int(pos[0]/ECART-1), Turn))
+        lst_pierres.append(pierre(len(lst_pierres), int(pos[1]/ECART-1), int(pos[0]/ECART-1), Turn))
+        lst_pierres[-1].assign_gr(Map)
         if Turn == 1:
             return 0
         else:
