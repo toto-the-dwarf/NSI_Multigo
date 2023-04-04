@@ -13,10 +13,11 @@ class pierre:
     def check(self, Map):
         lst_voisins = []
         for (x, y) in [(-1, 0), (1, 0), (0, -1), (0,1)]:
-            if Map[self.coord[0]+x][self.coord[1]+y] != -1:
-                for i in lst_pierres:
-                    if i.coord == (self.coord[0]+x, self.coord[1]+y):
-                        lst_voisins.append(i)
+            if self.coord[0]+x >= 0 and self.coord[0]+x < len(Map) and self.coord[1]+y >= 0 and self.coord[1]+y < len(Map[0]):
+                if Map[self.coord[0]+x][self.coord[1]+y] != -1:
+                    for i in lst_pierres:
+                        if i.coord == (self.coord[0]+x, self.coord[1]+y):
+                            lst_voisins.append(i)
         return lst_voisins
     
     def assign_gr(self, Map):
@@ -72,8 +73,6 @@ def main():
         drawGrid()
         update(map_pierres)
         Hover = hover()
-        for i in COULEURS:
-            print(i.lst_gr)
         if Hover != False and map_pierres[int(Hover[1]/ECART-1)][int(Hover[0]/ECART-1)] == -1:
             circle = pygame.draw.circle(SCREEN, COULEURS[Turn].rgb, Hover, SIZE)
             Turn = click(map_pierres, Hover, Turn)
